@@ -46,11 +46,16 @@ angular.module('ui.bootstrap.rating', [])
   };
 
   this.getTitle = function(index) {
+    var title = '';
     if (index >= this.titles.length) {
       return index + 1;
     }
-
-    return this.titles[index];
+    if (this.titles[index] && this.titles[index].constructor.name === 'String') {
+      title = this.titles[index].trim();
+    } else {
+      title = this.titles[index];
+    }
+    return title;
   };
 
   $scope.rate = function(value) {

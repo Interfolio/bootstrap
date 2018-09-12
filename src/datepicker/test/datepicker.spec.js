@@ -35,7 +35,7 @@ describe('datepicker', function() {
   }
 
   function getTitle() {
-    return getTitleButton().text();
+    return getTitleButton().text().trim();
   }
 
   function clickTitleButton() {
@@ -61,16 +61,16 @@ describe('datepicker', function() {
     var els = getLabelsRow().find('th'),
         labels = [];
     for (var i = dayMode ? 1 : 0, n = els.length; i < n; i++) {
-      labels.push(els.eq(i).text());
+      labels.push(els.eq(i).text().trim());
     }
     return labels;
   }
 
   function getWeeks() {
-    var rows = element.find('tbody').find('tr'),
-        weeks = [];
+    var rows = element.find('tbody').find('tr');
+    var weeks = [];
     for (var i = 0, n = rows.length; i < n; i++) {
-      weeks.push(rows.eq(i).find('td').eq(0).first().text());
+      weeks.push(rows.eq(i).find('td').eq(0).first().text().trim());
     }
     return weeks;
   }
@@ -82,7 +82,7 @@ describe('datepicker', function() {
     for (var j = 0, numRows = tr.length; j < numRows; j++) {
       var cols = tr.eq(j).find('td'), days = [];
       for (var i = dayMode ? 1 : 0, n = cols.length; i < n; i++) {
-        days.push(cols.eq(i).find('button').text());
+        days.push(cols.eq(i).find('button').text().trim());
       }
       rows.push(days);
     }
@@ -719,7 +719,7 @@ describe('datepicker', function() {
 
       describe('keyboard navigation', function() {
         function getActiveLabel() {
-          return element.find('.active').eq(0).text();
+          return element.find('.active').eq(0).text().trim();
         }
 
         describe('day mode', function() {

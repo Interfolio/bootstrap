@@ -19,7 +19,7 @@ describe('datepicker popup', function() {
   }
 
   function getTitle() {
-    return getTitleButton().text();
+    return getTitleButton().text().trim();
   }
 
   function clickTitleButton() {
@@ -34,7 +34,7 @@ describe('datepicker popup', function() {
     var els = getLabelsRow().find('th'),
         labels = [];
     for (var i = dayMode ? 1 : 0, n = els.length; i < n; i++) {
-      labels.push(els.eq(i).text());
+      labels.push(els.eq(i).text().trim());
     }
     return labels;
   }
@@ -46,7 +46,7 @@ describe('datepicker popup', function() {
     for (var j = 0, numRows = tr.length; j < numRows; j++) {
       var cols = tr.eq(j).find('td'), days = [];
       for (var i = dayMode ? 1 : 0, n = cols.length; i < n; i++) {
-        days.push(cols.eq(i).find('button').text());
+        days.push(cols.eq(i).find('button').text().trim());
       }
       rows.push(days);
     }
@@ -1004,9 +1004,9 @@ describe('datepicker popup', function() {
       it('should have three buttons', function() {
         expect(buttons.length).toBe(3);
 
-        expect(buttons.eq(0).text()).toBe('Today');
-        expect(buttons.eq(1).text()).toBe('Clear');
-        expect(buttons.eq(2).text()).toBe('Done');
+        expect(buttons.eq(0).text().trim()).toBe('Today');
+        expect(buttons.eq(1).text().trim()).toBe('Clear');
+        expect(buttons.eq(2).text().trim()).toBe('Done');
       });
 
       it('should have a button to set today date without altering time part', function() {
@@ -1064,9 +1064,9 @@ describe('datepicker popup', function() {
         assignElements(wrapElement);
         assignButtonBar();
 
-        expect(buttons.eq(0).text()).toBe('Now');
-        expect(buttons.eq(1).text()).toBe('Null it!');
-        expect(buttons.eq(2).text()).toBe('CloseME');
+        expect(buttons.eq(0).text().trim()).toBe('Now');
+        expect(buttons.eq(1).text().trim()).toBe('Null it!');
+        expect(buttons.eq(2).text().trim()).toBe('CloseME');
       });
 
       it('should disable today button if before min date', function() {
