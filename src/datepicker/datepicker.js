@@ -206,11 +206,9 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
       if ($scope.activeDt) {
         $scope.activeDateId = $scope.activeDt.uid;
       }
-
       var date = ngModelCtrl.$viewValue ? new Date(ngModelCtrl.$viewValue) : null;
       date = dateParser.fromTimezone(date, ngModelOptions.getOption('timezone'));
-      ngModelCtrl.$setValidity('dateDisabled', !date ||
-        this.element && !this.isDisabled(date));
+      ngModelCtrl.$setValidity('dateDisabled', !date || this.element && !this.isDisabled(date));
     }
   };
 
@@ -228,7 +226,13 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
       past: time < 0,
       current: time === 0,
       future: time > 0,
-      customClass: this.customClass(date) || null
+      customClass: this.customClass(date) || null,
+      long: date.toLocaleDateString("en-US",{
+        day:"numeric",
+        weekday:"long",
+        year: "numeric",
+        month: "long"
+      })
     };
 
     if (model && this.compare(date, model) === 0) {
@@ -272,10 +276,8 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
     } else {
       self.activeDate = date;
       setMode(self.modes[self.modes.indexOf($scope.datepickerMode) - 1]);
-
       $scope.$emit('uib:datepicker.mode');
     }
-
     $scope.$broadcast('uib:datepicker.focus');
   };
 
@@ -288,19 +290,27 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
 
   $scope.toggleMode = function(direction) {
     direction = direction || 1;
-
     if ($scope.datepickerMode === self.maxMode && direction === 1 ||
       $scope.datepickerMode === self.minMode && direction === -1) {
       return;
     }
-
     setMode(self.modes[self.modes.indexOf($scope.datepickerMode) + direction]);
-
     $scope.$emit('uib:datepicker.mode');
   };
 
   // Key event mapper
-  $scope.keys = { 13: 'enter', 32: 'space', 33: 'pageup', 34: 'pagedown', 35: 'end', 36: 'home', 37: 'left', 38: 'up', 39: 'right', 40: 'down' };
+  $scope.keys = { 
+    13: 'enter', 
+    32: 'space', 
+    33: 'pageup', 
+    34: 'pagedown', 
+    35: 'end', 
+    36: 'home', 
+    37: 'left', 
+    8: 'up', 
+    39: 'right', 
+    40: 'down' 
+  };
 
   var focusElement = function() {
     self.element[0].focus();
@@ -317,6 +327,7 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
     }
 
     evt.preventDefault();
+
     if (!self.shortcutPropagation) {
       evt.stopPropagation();
     }
@@ -382,6 +393,7 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
 
     return ngModelOptions;
   }
+
 }])
 
 .controller('UibDaypickerController', ['$scope', '$element', 'dateFilter', function(scope, $element, dateFilter) {
@@ -389,6 +401,7 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
 
   this.step = { months: 1 };
   this.element = $element;
+
   function getDaysInMonth(year, month) {
     return month === 1 && year % 4 === 0 &&
       (year % 100 !== 0 || year % 400 === 0) ? 29 : DAYS_IN_MONTH[month];
@@ -411,16 +424,15 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
   };
 
   this._refreshView = function() {
-    var year = this.activeDate.getFullYear(),
-      month = this.activeDate.getMonth(),
-      firstDayOfMonth = new Date(this.activeDate);
+    var year = this.activeDate.getFullYear();
+    var month = this.activeDate.getMonth();
 
+    var firstDayOfMonth = new Date(this.activeDate);
     firstDayOfMonth.setFullYear(year, month, 1);
 
-    var difference = this.startingDay - firstDayOfMonth.getDay(),
-      numDisplayedFromPreviousMonth = difference > 0 ?
-        7 - difference : - difference,
-      firstDate = new Date(firstDayOfMonth);
+    var difference = this.startingDay - firstDayOfMonth.getDay();
+    var numDisplayedFromPreviousMonth = difference > 0 ? 7 - difference : - difference;
+    var firstDate = new Date(firstDayOfMonth);
 
     if (numDisplayedFromPreviousMonth > 0) {
       firstDate.setDate(-numDisplayedFromPreviousMonth + 1);
@@ -448,11 +460,10 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
 
     if (scope.showWeeks) {
       scope.weekNumbers = [];
-      var thursdayIndex = (4 + 7 - this.startingDay) % 7,
-          numWeeks = scope.rows.length;
+      var thursdayIndex = (4 + 7 - this.startingDay) % 7;
+      var numWeeks = scope.rows.length;
       for (var curWeek = 0; curWeek < numWeeks; curWeek++) {
-        scope.weekNumbers.push(
-          getISO8601WeekNumber(scope.rows[curWeek][thursdayIndex].date));
+        scope.weekNumbers.push(getISO8601WeekNumber(scope.rows[curWeek][thursdayIndex].date));
       }
     }
   };
@@ -476,7 +487,6 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
 
   this.handleKeyDown = function(key, evt) {
     var date = this.activeDate.getDate();
-
     if (key === 'left') {
       date = date - 1;
     } else if (key === 'up') {
@@ -535,7 +545,6 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
 
   this.handleKeyDown = function(key, evt) {
     var date = this.activeDate.getMonth();
-
     if (key === 'left') {
       date = date - 1;
     } else if (key === 'up') {
@@ -572,7 +581,6 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
 
   this._refreshView = function() {
     var years = new Array(range), date;
-
     for (var i = 0, start = getStartingYear(this.activeDate.getFullYear()); i < range; i++) {
       date = new Date(this.activeDate);
       date.setFullYear(start + i, 0, 1);
@@ -580,7 +588,6 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
         uid: scope.uniqueId + '-' + i
       });
     }
-
     scope.title = [years[0].label, years[range - 1].label].join(' - ');
     scope.rows = this.split(years, columns);
     scope.columns = columns;
@@ -592,7 +599,6 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
 
   this.handleKeyDown = function(key, evt) {
     var date = this.activeDate.getFullYear();
-
     if (key === 'left') {
       date = date - 1;
     } else if (key === 'up') {
@@ -626,7 +632,6 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
     controllerAs: 'datepicker',
     link: function(scope, element, attrs, ctrls) {
       var datepickerCtrl = ctrls[0], ngModelCtrl = ctrls[1];
-
       datepickerCtrl.init(ngModelCtrl);
     }
   };
