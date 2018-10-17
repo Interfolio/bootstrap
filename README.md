@@ -18,4 +18,5 @@ Here are the steps you need to take to modify this library:
 1. To compile JS you will need to run `grunt build`
 1. To compile HTML you will need to run `grunt before-test build` and recompile your FE as templates get cached
 1. To run the build once you are done making all your changes, just use the default task `grunt`. This will run all the UTs and all the build process.
+1. Bump up the version number with `grunt version:patch`
 1. You will need to create a tarball of the project before deploying it to GemFury.
