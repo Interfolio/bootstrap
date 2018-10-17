@@ -1,5 +1,27 @@
 <div ng-switch="datepickerMode">
-  <div uib-daypicker ng-switch-when="day" tabindex="0" class="uib-daypicker"></div>
-  <div uib-monthpicker ng-switch-when="month" tabindex="0" class="uib-monthpicker"></div>
-  <div uib-yearpicker ng-switch-when="year" tabindex="0" class="uib-yearpicker"></div>
+  <div
+    uib-daypicker
+    ng-switch-when="day"
+    tabindex="0"
+    class="uib-daypicker"
+  ></div>
+  <div
+    uib-monthpicker
+    ng-switch-when="month"
+    tabindex="0"
+    class="uib-monthpicker"
+  ></div>
+  <div
+    uib-yearpicker
+    ng-switch-when="year"
+    tabindex="0"
+    class="uib-yearpicker"
+  ></div>
+  <div
+    class="sr-only-liveregion"
+    role="region"
+    id="{{::uniqueId}}-liveregion"
+    aria-live="assertive"
+    aria-atomic="true"
+  ></div>
 </div>

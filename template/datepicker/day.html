@@ -87,9 +87,7 @@
       >
         <button
           class="btn btn-default btn-sm"
-          ng-attr-aria-atomic="{{isActive(dt) && 'true' || undefined }}" 
-          ng-attr-aria-label="{{isActive(dt) && dt.long || undefined}}" 
-          ng-attr-aria-live="{{isActive(dt) && 'assertive' || undefined}}"
+          ng-attr-aria-label="{{isActive(dt) && dt.long}}" 
           ng-click="select(dt.date)"
           ng-disabled="::dt.disabled"
           tabindex="-1"

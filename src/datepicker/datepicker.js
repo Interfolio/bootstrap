@@ -144,6 +144,7 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
   $scope.uniqueId = 'datepicker-' + $scope.$id + '-' + Math.floor(Math.random() * 10000);
 
   $scope.disabled = angular.isDefined($attrs.disabled) || false;
+
   if (angular.isDefined($attrs.ngDisabled)) {
     watchListeners.push($scope.$parent.$watch($attrs.ngDisabled, function(disabled) {
       $scope.disabled = disabled;
@@ -154,6 +155,7 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
   $scope.isActive = function(dateObject) {
     if (self.compare(dateObject.date, self.activeDate) === 0) {
       $scope.activeDateId = dateObject.uid;
+      $("#"+$scope.uniqueId+"-liveregion").text(dateObject['long']);
       return true;
     }
     return false;
@@ -268,7 +270,9 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
 
   $scope.select = function(date) {
     if ($scope.datepickerMode === self.minMode) {
-      var dt = ngModelCtrl.$viewValue ? dateParser.fromTimezone(new Date(ngModelCtrl.$viewValue), ngModelOptions.getOption('timezone')) : new Date(0, 0, 0, 0, 0, 0, 0);
+      var dt = ngModelCtrl.$viewValue ? 
+        dateParser.fromTimezone(new Date(ngModelCtrl.$viewValue), ngModelOptions.getOption('timezone')) : 
+        new Date(0, 0, 0, 0, 0, 0, 0);
       dt.setFullYear(date.getFullYear(), date.getMonth(), date.getDate());
       dt = dateParser.toTimezone(dt, ngModelOptions.getOption('timezone'));
       ngModelCtrl.$setViewValue(dt);
@@ -278,6 +282,7 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
       setMode(self.modes[self.modes.indexOf($scope.datepickerMode) - 1]);
       $scope.$emit('uib:datepicker.mode');
     }
+
     $scope.$broadcast('uib:datepicker.focus');
   };
 
@@ -307,7 +312,7 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
     35: 'end', 
     36: 'home', 
     37: 'left', 
-    8: 'up', 
+    38: 'up', 
     39: 'right', 
     40: 'down' 
   };
@@ -404,7 +409,9 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
 
   function getDaysInMonth(year, month) {
     return month === 1 && year % 4 === 0 &&
-      (year % 100 !== 0 || year % 400 === 0) ? 29 : DAYS_IN_MONTH[month];
+      (year % 100 !== 0 || year % 400 === 0) ? 
+      29 : 
+      DAYS_IN_MONTH[month];
   }
 
   this.init = function(ctrl) {
@@ -487,6 +494,7 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.dateparser', 'ui.bootst
 
   this.handleKeyDown = function(key, evt) {
     var date = this.activeDate.getDate();
+
     if (key === 'left') {
       date = date - 1;
     } else if (key === 'up') {
